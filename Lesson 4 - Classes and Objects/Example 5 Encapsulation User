@@ -1,0 +1,166 @@
+/*
+Name: Jodestee Jn Francois
+Course: CSCI 272
+*/
+
+// ============================================================
+// WHAT THIS PROGRAM DOES:
+// This program demonstrates ENCAPSULATION using a User class that models
+// a simple login system.
+//
+// ENCAPSULATION means: hiding internal data (username, password) inside
+// the class and only allowing the outside world to interact with it
+// through controlled, public "doorways" (member functions).
+//
+// In this example:
+//   - username and password are PRIVATE → nobody outside can see/change them directly.
+//   - login() lets us CHECK if credentials are correct → read-only controlled access.
+//   - updatePassword() lets us CHANGE the password → write-only controlled access.
+// ============================================================
+
+#include <iostream>
+#include <string>
+
+// ============================================================
+// CLASS DEFINITION: User
+// Models a user account with a username and password.
+// Encapsulates both the data and the operations on that data.
+// ============================================================
+class User {
+
+// PRIVATE data members — completely hidden from outside the class.
+// No code outside this class can directly read "username" or "password".
+// This protects sensitive information.
+private:
+
+    // std::string username; → Stores the user's account name (text).
+    // No default value — must be set through the constructor.
+    std::string username;
+
+    // std::string password; → Stores the user's secret password (text).
+    // No default value — must be set through the constructor.
+    std::string password;
+
+// PUBLIC members — these are the safe "gates" to interact with the data.
+public:
+
+    // --------------------------------------------------------
+    // PARAMETERIZED CONSTRUCTOR
+    // Takes two parameters to set the username and password when the object is created.
+    // "const std::string& uname" → a READ-ONLY reference to a text value for username.
+    //   - "const" = we won't change it inside the constructor.
+    //   - "&" = reference (avoids making an extra copy, more efficient).
+    //   - "std::string" = it's a text type.
+    //   - "uname" = the local name we use inside this constructor for the username input.
+    // "const std::string& pwd" → same idea, but for the password input.
+    // --------------------------------------------------------
+    User(const std::string& uname, const std::string& pwd) {
+        // username = uname; → Store the provided username into the private data member.
+        username = uname;
+
+        // password = pwd; → Store the provided password into the private data member.
+        password = pwd;
+    }
+
+    // --------------------------------------------------------
+    // login() — Checks whether given credentials match the stored ones.
+    // Parameters:
+    //   const std::string& inputUser → the username the user tries to log in with.
+    //   const std::string& inputPwd  → the password the user tries to log in with.
+    // Return type: bool → returns true (login success) or false (login failed).
+    // "const" at the end (after the parameters) → this function PROMISES not to
+    //   change any data members. It's a "read-only" function.
+    // --------------------------------------------------------
+    bool login(const std::string& inputUser, const std::string& inputPwd) const {
+        // Compare inputUser with stored username AND inputPwd with stored password.
+        // == checks equality (is left side equal to right side?).
+        // & is a BITWISE AND (both conditions must be true).
+        // NOTE: In professional code, && (logical AND) is more commonly used here.
+        // The entire expression evaluates to true or false and is RETURNED.
+        return (inputUser == username) & (inputPwd == password);
+    }
+
+    // --------------------------------------------------------
+    // updatePassword() — Replaces the stored password with a new one.
+    // This is the ONLY way code outside the class can change the password.
+    // Parameter:
+    //   const std::string& newPwd → the new password to store.
+    // Return type: void → doesn't return anything.
+    // --------------------------------------------------------
+    void updatePassword(const std::string& newPwd) {
+        // password = newPwd; → Overwrite the existing password with the new one.
+        // Because "password" is private, only THIS function can change it.
+        password = newPwd;
+    }
+
+// End of class.
+};
+
+// ============================================================
+// MAIN FUNCTION
+// ============================================================
+int main() {
+
+    // Create a User object named "user1" with username="alice" and password="secret123".
+    // The parameterized constructor is called here.
+    User user1("alice", "secret123");
+
+    // Test login() with CORRECT credentials → should return true (1).
+    // We store the result in a bool variable called "result".
+    bool result = user1.login("alice", "secret123");
+
+    // Print the result. In C++, true prints as 1 and false prints as 0.
+    std::cout << "Login with correct password: " << result << std::endl;
+
+    // Test login() with WRONG password → should return false (0).
+    result = user1.login("alice", "wrongpassword");
+    std::cout << "Login with wrong password: " << result << std::endl;
+
+    // Update the password using the controlled updatePassword() function.
+    // Nobody outside the class can directly say: user1.password = "newpass"; → COMPILE ERROR.
+    // They must go through updatePassword().
+    user1.updatePassword("newpass456");
+
+    // Try logging in with the OLD password after changing it → should return false (0).
+    result = user1.login("alice", "secret123");
+    std::cout << "Login with old password after update: " << result << std::endl;
+
+    // Try logging in with the NEW password → should return true (1).
+    result = user1.login("alice", "newpass456");
+    std::cout << "Login with new password: " << result << std::endl;
+
+    return 0;
+}
+
+/*
+Reflection:
+
+1. What I understood:
+
+   I understood the concept of encapsulation and how data such as passwords is secured using this concept. 
+   The data is declared as private, and only member functions declared public can access these private data members. 
+   I also learned the usage of "const" at the end of a function, which indicates that this function cannot alter any data in the class, 
+   such as in the case of the login() function.
+
+2. Difficulties:
+
+   The keyword "const" is used in this code snippet in four places, and I found it difficult to grasp the usage in all four places. 
+   The first "const std::string& param" indicates that this data will not be modified, while the "const" at the end of the function 
+   indicates that this function does not alter the data in the class.
+
+3. Research:
+
+   I researched "const member function in C++" to find the usage of "const" after the closing parenthesis in the login() function. 
+   I also researched the difference between & and && in a Boolean condition in C++.
+
+4. AI Usage:
+
+   I used AI (Claude) to comment every line of code, explaining the concepts used in this program. 
+   I also used the AI to write a main() function, which can test this class, as this was not mentioned in the slides.
+
+5. What I learned:
+
+   I learned the concept of encapsulation and how data is secured using this concept, 
+   just like we cannot view someone's password directly. I also learned the usage of "const" in reference parameters, 
+   which is more efficient in terms of memory usage, especially for strings.
+*/

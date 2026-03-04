@@ -1,0 +1,158 @@
+/*
+Name: Jodestee Jn Francois
+Course: CSCI 272
+*/
+
+// ============================================================
+// WHAT THIS PROGRAM DOES:
+// This program demonstrates what a DESTRUCTOR is in C++.
+// A destructor is a special function that runs AUTOMATICALLY when an object
+// is no longer needed (goes "out of scope" or is deleted).
+// You don't call a destructor manually — C++ calls it for you!
+//
+// In this example, when main() finishes, car1, car2, and car3 go out of scope
+// and their destructors are called. You will see "Object is destroyed" printed
+// three times — once for each Car object.
+// ============================================================
+
+#include <iostream>
+#include <string>
+
+// ============================================================
+// CLASS DEFINITION: Car
+// This version includes a Destructor plus a Default constructor,
+// a Parameterized constructor, and a Copy constructor.
+// ============================================================
+class Car {
+
+private:
+
+    // These three data members store the car's identity.
+    // They have default values in case the default constructor is used.
+    std::string brand{"Volkswagen"};
+    std::string model = "Polo";
+    int year{2012};
+
+public:
+
+    // DEFAULT CONSTRUCTOR — called when no arguments are given.
+    // Empty body: just use the default values already set above.
+    Car() {
+    }
+
+    // PARAMETERIZED CONSTRUCTOR — called when brand, model, year are provided.
+    // std::string b → parameter for brand (text)
+    // std::string m → parameter for model (text)
+    // int y         → parameter for year (number)
+    Car(std::string b, std::string m, int y) {
+        brand = b;   // Store the given brand into the object's brand variable.
+        model = m;   // Store the given model into the object's model variable.
+        year  = y;   // Store the given year  into the object's year  variable.
+    }
+
+    // COPY CONSTRUCTOR — called when an object is created by copying another.
+    // "const Car& other" → a reference to the Car we want to copy (read-only).
+    Car(const Car& other) {
+        brand = other.brand;  // Copy brand from the source object.
+        model = other.model;  // Copy model from the source object.
+        year  = other.year;   // Copy year  from the source object.
+    }
+
+    // --------------------------------------------------------
+    // DESTRUCTOR
+    // The destructor's name MUST be: ~ followed by the class name → ~Car()
+    // It takes NO parameters and has NO return type.
+    // C++ calls this automatically when an object goes out of scope or is deleted.
+    // Use it to release resources (memory, files, network connections, etc.).
+    // Here, we just print a message so you can SEE when it is called.
+    // --------------------------------------------------------
+    ~Car() {  // Destructor — starts with tilde (~)
+        // This line prints to the screen every time a Car object is destroyed.
+        std::cout << "Object is destroyed" << std::endl;
+    }
+
+    // startEngine() → Prints the brand and model of this car.
+    // This helps us see WHICH car is starting its engine.
+    void startEngine() {
+        // Prints a line showing this car's brand and model.
+        // "{brand:...|model:...}" is just a formatted display style.
+        std::cout << "start engine "
+                  << "{brand:" << brand << "|model:" << model << "}"
+                  << std::endl;
+    }
+
+// End of class. Semicolon required!
+};
+
+// ============================================================
+// MAIN FUNCTION — Program starts here.
+// ============================================================
+int main() {
+
+    // Car car1; → Creates a Car using the DEFAULT constructor.
+    // brand="Volkswagen", model="Polo", year=2012 (default values).
+    Car car1;  // default constructor
+
+    // Car car2("Tesla","X",2022); → Creates a Car using the PARAMETERIZED constructor.
+    // brand="Tesla", model="X", year=2022 (custom values we provided).
+    Car car2("Tesla", "X", 2022);  // parameterized constructor
+
+    // Car car3(car2); → Creates a Car using the COPY constructor.
+    // car3 gets the same brand, model, and year as car2.
+    Car car3(car2);  // copy constructor
+
+    // Call startEngine() on each object to verify they were created correctly.
+    car1.startEngine();  // Prints: start engine {brand:Volkswagen|model:Polo}
+    car2.startEngine();  // Prints: start engine {brand:Tesla|model:X}
+    car3.startEngine();  // Prints: start engine {brand:Tesla|model:X}  (copied from car2)
+
+    // return 0 → Program ends here. main() finishes.
+    // As SOON AS main() ends, all local variables (car1, car2, car3) go "out of scope".
+    // C++ automatically calls ~Car() for each one.
+    // You will see "Object is destroyed" printed THREE times.
+    // The order of destruction is REVERSE of creation: car3 → car2 → car1.
+    return 0;
+
+}  // ← Destructor for car3 is called here
+   // ← Destructor for car2 is called here
+   // ← Destructor for car1 is called here
+
+/*
+Reflection:
+
+1. What I understood:
+
+   What I understood is that a destructor is a "cleanup" function for a class. Just as
+   a constructor is called when an object is created, a destructor is called when
+   it is destroyed. What I learned is that a destructor is called AUTOMATICALLY – you
+   never explicitly call ~Car()! What I noticed is that a destructor is called in
+   REVERSE order of construction (i.e., car3 is destroyed first, then car2, and
+   finally car1).
+
+2. Difficulties:
+
+   What I found difficult is the use of the tilde (~) symbol for the destructor
+   function name. Another difficulty is understanding WHEN the destructor is called
+   without the print statement. Adding a print statement inside the destructor helped
+   me understand it better.
+
+3. Research:
+
+   What I learned is that a destructor is called in REVERSE order of construction
+   for local objects, and for objects on the heap created with "new," it is called
+   only when "delete" is executed.
+
+4. AI Usage:
+
+   What I did is use AI (Claude) for annotating each line of code and explaining
+   what it does, explaining what is going on with an object (constructor, use, and
+   destructor), and explaining what is going on with the comment where each destructor
+   is called – i.e., at the closing brace of main().
+
+5. What I learned:
+
+   What I learned is that a destructor is very important for preventing memory leak
+   for programs that use memory and other resources. Although it is a very simple
+   example, it is a very important design pattern for C++ programs, and it is called
+   RAII – Resource Acquisition Is Initialization.
+*/

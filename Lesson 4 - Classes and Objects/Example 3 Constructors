@@ -1,0 +1,199 @@
+/*
+Name: Jodestee Jn Francois
+Course: CSCI 272
+*/
+
+// ============================================================
+// WHAT THIS PROGRAM DOES:
+// This program demonstrates three types of constructors in C++:
+//   1. Default Constructor     → creates an object with preset default values
+//   2. Parameterized Constructor → creates an object with custom values you provide
+//   3. Copy Constructor        → creates a new object as a copy of an existing one
+//
+// It also shows how to create objects using pointers (new keyword)
+// and how to create an array of objects.
+// ============================================================
+
+// Include the I/O library for printing to the screen.
+#include <iostream>
+
+// Include the string library to use std::string for text.
+#include <string>
+
+// ============================================================
+// CLASS DEFINITION: Car
+// This Car class demonstrates three different constructor types.
+// ============================================================
+class Car {
+
+// Private section: data is hidden from code outside this class.
+private:
+
+    // brand, model → text variables (strings) to store car identity.
+    // year → integer to store the manufacturing year.
+    // These have default values used ONLY when the default constructor is called.
+    std::string brand{"Volkswagen"};
+    std::string model = "Polo";
+    int year{2012};
+
+// Public section: accessible from outside the class.
+public:
+
+    // --------------------------------------------------------
+    // 1. DEFAULT CONSTRUCTOR
+    // A constructor that takes NO arguments.
+    // Its name MUST be exactly the same as the class name: Car
+    // It has NO return type (not even void).
+    // When called with no arguments, the object gets the default values
+    // already set above (brand="Volkswagen", model="Polo", year=2012).
+    // C++ automatically creates one if you don't write it, but here we define it explicitly.
+    // --------------------------------------------------------
+    Car() {  // Default constructor — empty body means use default values already set above
+    }
+
+    // --------------------------------------------------------
+    // 2. PARAMETERIZED CONSTRUCTOR
+    // This constructor takes 3 arguments: b (brand), m (model), y (year).
+    // "std::string b" means b is a text parameter.
+    // "int y" means y is an integer parameter.
+    // The body assigns the incoming values to the class's data members.
+    // --------------------------------------------------------
+    Car(std::string b, std::string m, int y) {  // Parameterized constructor
+
+        // brand = b; → Takes the value from parameter b and stores it in the
+        //              class's "brand" data member.
+        brand = b;
+
+        // model = m; → Same idea — stores m into "model".
+        model = m;
+
+        // year = y; → Stores y into "year".
+        year = y;
+    }
+
+    // --------------------------------------------------------
+    // 3. COPY CONSTRUCTOR
+    // Creates a brand-new object by COPYING the values from an existing object.
+    // Parameter: "const Car & other"
+    //   - "const" → We promise NOT to modify the source object (other).
+    //   - "Car &"  → This is a REFERENCE to a Car object (not a copy itself).
+    //                A reference is like a nickname for an existing object.
+    //   - "other"  → The name we use inside this constructor to refer to the source object.
+    // --------------------------------------------------------
+    Car(const Car& other) {  // Copy constructor
+
+        // Copy each data member from "other" into this new object.
+        // "other.brand" → accesses the brand of the source Car object.
+        brand = other.brand;
+
+        // Copy model from the source object.
+        model = other.model;
+
+        // Copy year from the source object.
+        year = other.year;
+    }
+
+    // A member function so we can test the objects after creating them.
+    // Prints which brand and model the car has.
+    void startEngine() {
+        // Prints a message showing the brand and model of this car.
+        std::cout << "start engine {brand:" << brand << "|model:" << model << "}" << std::endl;
+    }
+
+// End of class. Semicolon is required!
+};
+
+// ============================================================
+// MAIN FUNCTION
+// ============================================================
+int main() {
+
+    // ---- STACK-BASED OBJECTS (regular variables) ----
+
+    // Car car1; → Calls the DEFAULT constructor.
+    // car1 gets: brand="Volkswagen", model="Polo", year=2012
+    Car car1;  // default constructor
+
+    // Car car2("Tesla", "X", 2022); → Calls the PARAMETERIZED constructor.
+    // car2 gets: brand="Tesla", model="X", year=2022
+    Car car2("Tesla", "X", 2022);  // parameterized constructor
+
+    // Car car3(car2); → Calls the COPY constructor.
+    // car3 gets exact copies of car2's brand, model, and year.
+    // car3 is a SEPARATE object — changing car2 later won't change car3.
+    Car car3(car2);  // copy constructor
+
+    // ---- POINTER-BASED OBJECTS (heap-based using "new") ----
+    // A pointer stores a MEMORY ADDRESS, not the object itself.
+    // "Car*" means "a pointer to a Car object".
+    // "new Car" asks the operating system for memory and creates the object there.
+
+    // pCar1 is a pointer to a new Car using the DEFAULT constructor.
+    Car* pCar1 = new Car;  // default constructor on the heap
+
+    // pCar2 is a pointer to a new Car using the PARAMETERIZED constructor.
+    Car* pCar2 = new Car("Tesla", "X", 2022);  // parameterized constructor on heap
+
+    // ---- ARRAY OF OBJECTS ----
+    // Car car[20]; → Creates an ARRAY of 20 Car objects.
+    // The DEFAULT constructor is called 20 times (once for each element).
+    // car[0] is the first Car, car[1] is the second, etc.
+    Car car[20];  // default constructor called 20 times
+
+    // ---- CALLING FUNCTIONS ON THE OBJECTS ----
+
+    // car1.startEngine(); → Dot (.) operator accesses member functions of stack objects.
+    car1.startEngine();
+
+    // car2.startEngine();
+    car2.startEngine();
+
+    // car3.startEngine(); → Should print the same as car2 (it was copied from car2).
+    car3.startEngine();
+
+    // pCar1->startEngine(); → Arrow (->) operator accesses member functions of POINTER objects.
+    // This is equivalent to (*pCar1).startEngine() — first dereference the pointer, then call the function.
+    pCar1->startEngine();
+
+    // pCar2->startEngine();
+    pCar2->startEngine();
+
+    // car[0].startEngine(); → Access the first element of the array with [0], then use dot operator.
+    car[0].startEngine();
+
+    // IMPORTANT: When using "new", you must use "delete" to release memory.
+    // Forgetting to delete causes a "memory leak" — the memory stays used forever.
+    delete pCar1;  // free the memory for pCar1
+    delete pCar2;  // free the memory for pCar2
+
+    // return 0 = program ended successfully.
+    return 0;
+}
+
+/*
+Reflection:
+
+1. What I understood:
+   The three different constructors and when each one of them is used:
+   - Default: No arguments are passed, and default values are used.
+   - Parameterized: Arguments are passed to customize the object at the time of creation.
+   - Copy: An object is created as a copy of an existing object.
+   The difference between stack and heap objects and why the arrow operator is used for pointers instead of the dot operator.
+
+2. Difficulties:
+   The copy constructor parameter "const Car& other" was not clear to me at first. 
+   I did not understand the meaning of "const" and "&." After searching for the answer, 
+   I found that the "&" sign makes it a reference and thus does not make an extra copy of the object. 
+   The "const" keyword ensures that we will not be changing the object from which we are making the copy.
+
+3. Research:
+   The difference between the dot operator and the arrow operator for pointers, 
+   and the importance of "delete" with "new."
+
+4. AI Usage:
+   I used the AI (Claude) to highlight each line with a clear explanation.
+
+5. What I learned:
+   Constructor overloading: Multiple constructors with different parameters enable the object to be created in different ways. 
+   Pointers: Pointers store memory locations, and the memory locations have to be freed with the "delete" keyword after the "new" keyword.
+*/

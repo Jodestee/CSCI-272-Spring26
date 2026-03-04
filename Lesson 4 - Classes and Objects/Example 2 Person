@@ -1,0 +1,122 @@
+/*
+Name: Jodestee Jn Francois
+Course: CSCI 272
+*/
+
+// ============================================================
+// WHAT THIS PROGRAM DOES:
+// This program demonstrates a "Person" class where the data members are
+// declared as PUBLIC instead of private. This means they are directly
+// accessible from outside the class.
+// The class has one member function: introduce(), which prints a greeting.
+// ============================================================
+
+// Load the I/O library so we can use std::cout to print to the screen.
+#include <iostream>
+
+// Load the string library so we can use std::string for text variables.
+#include <string>
+
+// ============================================================
+// CLASS DEFINITION: Person
+// This class models a person with a name, age, and gender.
+// ============================================================
+class Person {
+
+// "public:" here applies to BOTH the data members AND the member function.
+// This means ANYTHING outside the class can read or modify name, age, gender directly.
+// NOTE: Making data members public is less common in professional code because
+// it breaks encapsulation, but it's valid and useful for learning.
+public:
+
+    // std::string name{"Maksi"}; → A text variable to store the person's name.
+    // Default value is "Maksi" — any Person object created will start with this name.
+    std::string name{"Maksi"};
+
+    // int age{29}; → An integer variable for the person's age.
+    // Default value is 29.
+    int age{29};
+
+    // char gender{'M'}; → A "char" is a SINGLE character variable.
+    // It stores just one letter. Default is 'M' for Male.
+    // Note: single characters use SINGLE quotes ' ' while strings use double quotes " ".
+    char gender{'M'};
+
+    // void introduce() → A member function that prints a greeting.
+    // "void" = no return value. () = no parameters (takes nothing as input).
+    void introduce() {
+
+        // Print "Hello, I'm " followed by the value of name, then age info.
+        // The << operator chains multiple outputs together on one line.
+        std::cout << "Hello, I'm " << name << ". I'm " << age << " years old.";
+
+        // if statement: checks if gender equals 'M' (Male).
+        // The == is the COMPARISON operator (checks equality).
+        // Single = would ASSIGN a value — very different! == COMPARES.
+        if (gender == 'M') {
+            // If gender is 'M', print this message and move to a new line.
+            std::cout << " I'm a male." << std::endl;
+
+        // else if: a second condition to check, only if the first was false.
+        } else if (gender == 'F') {
+            // If gender is 'F', print this message.
+            std::cout << " I'm a female." << std::endl;
+
+        // else: if NEITHER condition above was true, run this block.
+        } else {
+            std::cout << " Gender unspecified." << std::endl;
+        }
+        // The if/else if/else chain ends here. Only ONE branch runs.
+    }
+
+// End of class definition. The ; after } is mandatory for classes.
+};
+
+// ============================================================
+// MAIN FUNCTION — Program execution starts here.
+// ============================================================
+int main() {
+
+    // Person person1; → Creates an object called "person1" using the Person class.
+    // Since no arguments are given, it uses default values:
+    //   name = "Maksi", age = 29, gender = 'M'
+    Person person1;
+
+    // person1.introduce(); → Calls the introduce() function on person1.
+    // Expected output: "Hello, I'm Maksi. I'm 29 years old. I'm a male."
+    person1.introduce();
+
+    // return 0 tells the OS the program completed successfully.
+    return 0;
+}
+
+/*
+Reflection:
+
+1.I was able to understand that a class can have all its members declared as "public", 
+meaning that all the data and function members are freely accessible outside the class.
+I was able to understand how the introduce() function uses an if/else if/else statement 
+to print different messages based on the gender variable defined as a character.
+
+2. Difficulties:
+
+I was confused about the use of single quotes 'M' (char) and double quotes "Maksi" (string). 
+I had to make sure that I do not mix up the assignment operator = with the comparison operator ==.
+
+3. Research:
+
+I went through the slide notes on access specifiers (public and private) 
+to understand why this program uses public data members, 
+which is less common in programming.
+
+4. AI Usage:
+
+I used AI (Claude) to explain each line with comments, 
+and this helped me understand the use of if/else if/else statements 
+and why char uses single quotes while string uses double quotes.
+
+5. What I learned:
+
+I was able to understand that "char" in C++ is used to store a single character and that in an if/else statement, 
+only ONE branch will be executed.
+*/

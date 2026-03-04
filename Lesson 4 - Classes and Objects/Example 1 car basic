@@ -1,0 +1,129 @@
+/*
+Name: Jodestee Jn Francois
+Course: CSCI 272
+*/
+
+// ============================================================
+// WHAT THIS PROGRAM DOES:
+// This program shows the most basic form of a C++ class.
+// A class is like a blueprint — just like a blueprint for a house
+// tells you how to build it, a class tells C++ how to build objects.
+// Here we create a "Car" class and one Car object, then call its functions.
+// ============================================================
+
+// #include <iostream> → This line tells C++ to load the Input/Output library.
+// Without this, we cannot use "std::cout" to print things to the screen.
+#include <iostream>
+
+// #include <string> → This line loads the string library.
+// Without this, we cannot use "std::string" to store text (like brand names).
+#include <string>
+
+// ============================================================
+// CLASS DEFINITION BEGINS HERE
+// The keyword "class" tells C++ we are building a blueprint called "Car".
+// The opening brace { marks the start of the class body.
+// ============================================================
+class Car {
+
+// "private:" means these data members (variables) can ONLY be accessed
+// from INSIDE the class. Code outside the class cannot read or change them directly.
+// This is called ENCAPSULATION — hiding the internal details.
+private:
+
+    // std::string brand{"Volkswagen"}; → A text variable called "brand".
+    // It is given a default value of "Volkswagen" using curly-brace initialization.
+    // std::string means a sequence of characters (text).
+    std::string brand{"Volkswagen"};
+
+    // std::string model = "Polo"; → Another text variable called "model".
+    // This uses = sign initialization instead of curly braces — both work the same way.
+    std::string model = "Polo";
+
+    // int year{2012}; → An integer (whole number) variable called "year".
+    // It is set to 2012 by default.
+    int year{2012};
+
+// "public:" means these member functions (methods) CAN be accessed
+// from OUTSIDE the class. This is how the outside world interacts with the Car.
+public:
+
+    // void startEngine() → A function (action) the car can do.
+    // "void" means this function does NOT return any value — it just performs an action.
+    // The () means it takes NO inputs (no parameters).
+    // The { } is the body of the function — what happens when you call it.
+    void startEngine() {
+        // std::cout → This is used to print text to the screen.
+        // << is the "insertion operator" — it sends data to the output stream.
+        // "start engine" is the text we want to print.
+        // std::endl → moves the cursor to a new line (like pressing Enter).
+        std::cout << "start engine" << std::endl;
+    }
+
+    // void accelerate() → Another action the car can do.
+    // Just like startEngine(), it takes no inputs and returns nothing.
+    void accelerate() {
+        // Prints "accelerate engine" to the screen followed by a new line.
+        std::cout << "accelerate engine" << std::endl;
+    }
+
+// The closing }; marks the END of the class definition.
+// IMPORTANT: The semicolon ; after } is REQUIRED for classes in C++.
+};
+
+// ============================================================
+// MAIN FUNCTION — This is where the program starts running.
+// Every C++ program must have exactly one main() function.
+// "int" means this function returns an integer number when it finishes.
+// ============================================================
+int main() {
+
+    // Car car1; → This creates a new Car OBJECT named "car1".
+    // Think of it like using the Car blueprint to build one actual car.
+    // This calls the default constructor (auto-generated since we didn't write one).
+    // car1 will have: brand="Volkswagen", model="Polo", year=2012 (the defaults).
+    Car car1;
+
+    // car1.startEngine(); → This calls the startEngine() function ON the car1 object.
+    // The dot (.) is how you access a member function of an object.
+    // Output: "start engine"
+    car1.startEngine();
+
+    // car1.accelerate(); → This calls the accelerate() function ON the car1 object.
+    // Output: "accelerate engine"
+    car1.accelerate();
+
+    // return 0; → This tells the operating system the program finished successfully.
+    // 0 = success. Any other number usually means something went wrong.
+    return 0;
+}
+
+/*
+Reflection:
+
+1. What I understood:
+
+   I understood that a class is essentially a blue print that can be used to create objects in C++.
+   The class has two main parts - "private" for hidden variables and "public" for functions that can be accessed.
+   I learned that private variables (brand, model, year) can be initialized with default values right in the class using either the {} or the = syntax.
+   The functions startEngine() and accelerate() define what the object can DO.
+
+2. Difficulties:
+
+   I got confused about why we need to put a ; after the closing } in class. Normal functions do not need this. 
+   But after going through the slides again, I got it. We need to put the ; after the closing } in class because C++ needs it for class definitions. 
+
+3. Research:
+
+   I did research to learn about the difference between using the curly brace syntax to initialize variables (int year{2012}) and the equals syntax (string model = "Polo").
+   I learned that they essentially do the same thing. 
+
+4. AI Usage:
+
+   I used an AI (Claude) to aks questions nad help me with the codes. I wanted to know exactly where I was making mistkes and why are somethings structured they way they are. 
+   I learned about encapsulation, the dot operator, and "void" functions with the AI. 
+
+5. What I learned:
+
+   I learned about the basic structure of a class in C++ - how to create an object from a class using the name of the class as the type.
+*/

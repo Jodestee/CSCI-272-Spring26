@@ -1,0 +1,191 @@
+/*
+Name: Jodestee Jn Francois
+Course: CSCI 272
+*/
+
+// ============================================================
+// WHAT THIS PROGRAM DOES:
+// This program demonstrates ENCAPSULATION using a BankAccount class.
+//
+// The core idea: the bank balance is PRIVATE. You cannot directly add
+// or remove money from it. You MUST use the deposit() or withdraw()
+// functions — just like a real bank that controls how you interact
+// with your account through official channels (teller, app, ATM).
+//
+// This pattern prevents dangerous operations like:
+//   account.balance = -99999;  ← This would be a COMPILE ERROR because balance is private.
+//
+// Instead, the class enforces rules:
+//   - deposit() only adds money (it just increases balance).
+//   - withdraw() only allows a withdrawal if you have ENOUGH money.
+//
+// This is a real-world example of why encapsulation matters!
+// ============================================================
+
+#include <iostream>
+#include <string>
+
+// ============================================================
+// CLASS DEFINITION: BankAccount
+// ============================================================
+class BankAccount {
+
+// PRIVATE section: only accessible from inside this class.
+private:
+
+    // double balance; → A "double" is a decimal number (can store cents).
+    // It stores the account's current balance.
+    // It is PRIVATE → code outside cannot directly read or set this value.
+    // There is no default value set here, so it will be initialized to 0
+    // only if we explicitly set it (C++ does NOT auto-initialize to 0 always).
+    double balance;
+
+// PUBLIC section: the controlled "doorways" to interact with the account.
+public:
+
+    // --------------------------------------------------------
+    // DEFAULT CONSTRUCTOR
+    // Initializes balance to 0.0 when a new account is created.
+    // This ensures a brand-new account always starts with zero balance
+    // (no accidental garbage value from memory).
+    // --------------------------------------------------------
+    BankAccount() {
+        // Set balance to 0.0 (the .0 makes it a double, not an int).
+        balance = 0.0;
+    }
+
+    // --------------------------------------------------------
+    // deposit() — Adds money to the account.
+    // Parameter: double amount → the amount of money to deposit (a decimal number).
+    // Return type: void → doesn't return anything.
+    // This function INCREASES the balance by the given amount.
+    // There is no restriction — any positive amount can be deposited.
+    // --------------------------------------------------------
+    void deposit(double amount) {
+        // balance += amount; is shorthand for: balance = balance + amount;
+        // The += operator adds "amount" to the current value of "balance".
+        balance += amount;
+    }
+
+    // --------------------------------------------------------
+    // withdraw() — Removes money from the account IF sufficient funds exist.
+    // Parameter: double amount → the amount of money to withdraw.
+    // Return type: void → doesn't return anything.
+    // This function only DECREASES the balance if the withdrawal amount
+    // is less than or equal to the current balance.
+    // This prevents the account from going NEGATIVE (overdraft protection).
+    // --------------------------------------------------------
+    void withdraw(double amount) {
+
+        // if (amount <= balance) → Check: is the requested amount affordable?
+        // "<=" means "less than or equal to".
+        // If true (we have enough money), allow the withdrawal.
+        if (amount <= balance) {
+
+            // balance -= amount; → Shorthand for: balance = balance - amount;
+            // Subtract the withdrawal amount from the balance.
+            balance -= amount;
+
+        }
+        // If amount > balance, nothing happens — withdrawal is silently rejected.
+        // In a real program, you'd want to print an error message here.
+    }
+
+    // --------------------------------------------------------
+    // getBalance() — Returns the current balance (read-only access).
+    // This is a "getter" function — the only way outsiders can READ the private balance.
+    // Return type: double → sends back the balance value.
+    // "const" at the end → this function CANNOT modify any data in the class.
+    // --------------------------------------------------------
+    double getBalance() const {
+        // return balance; → Send the value of balance back to whoever called this function.
+        return balance;
+    }
+
+// End of class.
+};
+
+// ============================================================
+// MAIN FUNCTION — Test the BankAccount class.
+// ============================================================
+int main() {
+
+    // BankAccount account; → Creates a new BankAccount object using the default constructor.
+    // account.balance starts at 0.0 (set in the constructor).
+    BankAccount account;
+
+    // Print the starting balance. We use getBalance() because balance is PRIVATE.
+    // We CANNOT do: std::cout << account.balance; ← This would be a COMPILE ERROR.
+    std::cout << "Starting balance: $" << account.getBalance() << std::endl;
+
+    // account.deposit(500.0); → Adds $500 to the account.
+    // balance becomes 0.0 + 500.0 = 500.0
+    account.deposit(500.0);
+    std::cout << "After depositing $500: $" << account.getBalance() << std::endl;
+
+    // account.deposit(250.0); → Adds $250 more to the account.
+    // balance becomes 500.0 + 250.0 = 750.0
+    account.deposit(250.0);
+    std::cout << "After depositing $250: $" << account.getBalance() << std::endl;
+
+    // account.withdraw(100.0); → Withdraws $100.
+    // 100.0 <= 750.0 is TRUE, so withdrawal is allowed.
+    // balance becomes 750.0 - 100.0 = 650.0
+    account.withdraw(100.0);
+    std::cout << "After withdrawing $100: $" << account.getBalance() << std::endl;
+
+    // account.withdraw(1000.0); → Tries to withdraw $1000.
+    // 1000.0 <= 650.0 is FALSE, so withdrawal is REJECTED. Balance stays at 650.0.
+    account.withdraw(1000.0);
+    std::cout << "After trying to withdraw $1000 (insufficient funds): $"
+              << account.getBalance() << std::endl;
+
+    return 0;
+}
+
+/*
+Reflection:
+
+1. What I understood:
+
+   I understood how encapsulation helps in enforcing constraints on how data can be
+   modified.
+   The balance variable cannot be directly modified from outside the class. It can
+   be modified using the deposit() and withdraw() methods.
+   In the withdraw() function, we have enforced a rule that will not allow
+   overdrafting by using an if statement.
+   This is similar to how a real bank enforces its rules at the point of interaction
+   and not at the storage level.
+
+2. Difficulties:
+
+   In the original slide, there was no constructor to set balance to 0.0. This
+   could have led to the program starting with a random garbage value in memory.
+   I had to add a default constructor and a function to get balance in order to
+   make the program functional.
+   I had to think about what += and -= mean as operators.
+
+3. Research:
+
+   I had to research what the difference between "double" and "int" in C++ is.
+   I had to research why we use double (or float) to represent money and not int.
+   I had to research whether C++ automatically initializes all primitive types
+   to 0 unless we do something about it.
+
+4. AI Usage:
+
+   I used AI (Claude) to complete the missing pieces in the slide.
+   I used AI (Claude) to add detailed line-by-line comments.
+   I used AI (Claude) to add a main() function to test the class and see what
+   happens when we withdraw more than we have.
+
+5. What I learned:
+
+   I learned that encapsulation is about more than just data hiding.
+   I learned that encapsulation is about enforcing "INVARIANTS" (rules that must
+   always be true). In this class, we have enforced the rule that balance must
+   never go below 0.
+   Without encapsulation, we can set balance to negative using other code.
+   Encapsulation is important in the real world because it enforces our rules at
+   the point of interaction and not at the storage level.
+*/
